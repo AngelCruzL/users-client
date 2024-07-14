@@ -1,0 +1,5 @@
+@if (users.length === 0) {
+  <p role="alert" class="alert alert-warning">No hay usuarios en el sistema</p>
+} @else {
+  <users-table [users]="users" />
+}
