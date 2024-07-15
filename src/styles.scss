@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+
+@use "@picocss/pico/scss";
+
+.text-center {
+  text-align: center;
+}
+
+.my-2 {
+  margin-block: 2em;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--row-gap, 1em);
+}
+
+.col {
+  flex: 1;
+}
