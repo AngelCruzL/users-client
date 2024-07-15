@@ -5,11 +5,11 @@
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
     "paths": {
-      "@models/*": [
-        "app/models/*"
+      "@core/*": [
+        "app/core/*"
       ],
-      "@services/*": [
-        "app/services/*"
+      "@shared/*": [
+        "app/shared/*"
       ]
     },
     "strict": true,
