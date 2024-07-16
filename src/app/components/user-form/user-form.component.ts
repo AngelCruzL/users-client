@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, output } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  OnInit,
+  output,
+} from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import {
   FormBuilder,
@@ -23,13 +30,20 @@ import { FormGroupDirective } from '@shared/directives';
   styles: ``,
 })
 export class UserFormComponent implements OnInit {
-  user!: User;
   $newUser = output<User>();
+  $user = input.required<User>();
   userForm!: FormGroup<UserForm>;
   isLoading = false;
   #fb = inject(FormBuilder);
   #passwordValidatorService = inject(PasswordValidatorService);
   #emailValidatorService = inject(EmailValidatorService);
+
+  constructor() {
+    effect(() => {
+      console.log(this.$user());
+      this.userForm.setValue({ ...this.$user(), passwordConfirmation: '' });
+    });
+  }
 
   get disableSubmit(): boolean {
     return this.userForm.invalid || this.isLoading;
@@ -38,6 +52,7 @@ export class UserFormComponent implements OnInit {
   ngOnInit(): void {
     this.userForm = this.#fb.group(
       {
+        id: [null],
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         email: [
@@ -82,6 +97,6 @@ export class UserFormComponent implements OnInit {
   onSubmit(): void {
     if (this.disableSubmit) return;
 
-    this.$newUser.emit(this.user);
+    this.$newUser.emit(this.$user());
   }
 }

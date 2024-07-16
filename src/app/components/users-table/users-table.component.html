@@ -9,7 +9,7 @@
       <th>Apellido(s)</th>
       <th>Correo electrónico</th>
       <th>Usuario</th>
-      <th>Eliminar</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -24,6 +24,11 @@
             <button class="delete-button" (click)="onRemoveUser(user.id)">
               <svg class="icon">
                 <use xlink:href="#trash"></use>
+              </svg>
+            </button>
+            <button (click)="onEditUser(user)">
+              <svg class="icon">
+                <use xlink:href="#pen"></use>
               </svg>
             </button>
           </td>

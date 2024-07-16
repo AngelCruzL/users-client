@@ -15,6 +15,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
 })
 export default class UserAppComponent implements OnInit, OnDestroy {
   users: User[] = [];
+  selectedUser!: User;
   #unsubscribeAll$ = new Subject<void>();
   #userService = inject(UserService);
 
@@ -37,5 +38,9 @@ export default class UserAppComponent implements OnInit, OnDestroy {
 
   removeUser(userId: number): void {
     this.users = this.users.filter(user => user.id !== userId);
+  }
+
+  setSelectedUser(user: User): void {
+    this.selectedUser = { ...user };
   }
 }
