@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import { User } from '@core/models';
 
@@ -11,4 +11,12 @@ import { User } from '@core/models';
 })
 export class UsersTableComponent {
   $users = input.required<User[]>();
+  $onRemoveUser = output<number>();
+
+  onRemoveUser(userId: number) {
+    const confirm = window.confirm(
+      'Are you sure you want to remove this user?',
+    );
+    if (confirm) this.$onRemoveUser.emit(userId);
+  }
 }

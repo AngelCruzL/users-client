@@ -31,7 +31,11 @@ export default class UserAppComponent implements OnInit, OnDestroy {
   }
 
   addUser(user: User): void {
-    console.log({ user })
+    console.log({ user });
     this.users = [...this.users, { ...user }];
+  }
+
+  removeUser(userId: number): void {
+    this.users = this.users.filter(user => user.id !== userId);
   }
 }

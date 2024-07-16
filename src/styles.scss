@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use "@picocss/pico/scss";
+@use "@picocss/pico/scss/colors" as c;
 
 .text-center {
   text-align: center;
@@ -17,5 +18,20 @@
 }
 
 .col {
-  flex: 1;
+  flex: var(--flex-grow, 1);
+}
+
+.delete-button {
+  border-color: c.$red-500;
+  background-color: c.$red-500;
+
+  &:hover {
+    border-color: c.$red-400;
+    background-color: c.$red-400;
+  }
+}
+
+.icon {
+  block-size: 1.2em;
+  inline-size: 1.2em;
 }

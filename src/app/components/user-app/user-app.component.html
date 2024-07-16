@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col">
+  <div class="col" style="--flex-grow: 1">
     <user-form ($newUser)="addUser($event)" />
   </div>
 
-  <div class="col">
-    <users-table [$users]="users" />
+  <div class="col" style="--flex-grow: 2">
+    <users-table ($onRemoveUser)="removeUser($event)" [$users]="users" />
   </div>
 </div>
