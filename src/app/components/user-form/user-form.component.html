@@ -1,0 +1,77 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="userForm">
+  <div form-group>
+    <label for="firstName">Nombre(s)</label>
+    <input
+      aria-describedby="firstName-error"
+      formControlName="firstName"
+      id="firstName"
+      placeholder="Ángel"
+      type="text"
+    />
+    <small id="firstName-error"></small>
+  </div>
+
+  <div form-group>
+    <label for="lastName">Apellido(s)</label>
+    <input
+      aria-describedby="lastName-error"
+      formControlName="lastName"
+      id="lastName"
+      placeholder="Cruz"
+      type="text"
+    />
+    <small id="lastName-error"></small>
+  </div>
+
+  <div form-group>
+    <label for="email">Correo electrónico</label>
+    <input
+      aria-describedby="email-error"
+      formControlName="email"
+      id="email"
+      placeholder="sample@test.dev"
+      type="email"
+    />
+    <small id="email-error"></small>
+  </div>
+
+  <div form-group>
+    <label for="username">Usuario</label>
+    <input
+      aria-describedby="username-error"
+      formControlName="username"
+      id="username"
+      placeholder="username"
+      type="text"
+    />
+    <small id="username-error"></small>
+  </div>
+
+  <div form-group>
+    <label for="password">Contraseña</label>
+    <input
+      aria-describedby="password-error"
+      formControlName="password"
+      id="password"
+      placeholder="********"
+      type="password"
+    />
+    <small id="password-error"></small>
+  </div>
+
+  @if (userForm.value.password?.trim() !== '') {
+    <div form-group>
+      <label for="passwordConfirmation">Confirmar contraseña</label>
+      <input
+        aria-describedby="passwordConfirmation-error"
+        formControlName="passwordConfirmation"
+        id="passwordConfirmation"
+        placeholder="*******"
+        type="password"
+      />
+      <small id="passwordConfirmation-error"></small>
+    </div>
+  }
+
+  <input [disabled]="disableSubmit" type="submit" value="Agregar usuario" />
+</form>

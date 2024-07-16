@@ -1,14 +1,15 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
-import { User } from '@models/user';
-import { UserService } from '@services/user.service';
+import { User } from '@core/models';
+import { UserService } from '../../services/user.service';
 import { UsersTableComponent } from '../users-table/users-table.component';
+import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
   selector: 'user-app',
   standalone: true,
-  imports: [UsersTableComponent],
+  imports: [UsersTableComponent, UserFormComponent],
   templateUrl: './user-app.component.html',
   styles: ``,
 })
@@ -27,5 +28,10 @@ export default class UserAppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.#unsubscribeAll$.next();
     this.#unsubscribeAll$.complete();
+  }
+
+  addUser(user: User): void {
+    console.log({ user })
+    this.users = [...this.users, { ...user }];
   }
 }

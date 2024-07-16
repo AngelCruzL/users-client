@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-import { User } from '@models/user';
+import { User } from '@core/models';
 
 @Component({
   selector: 'users-table',
@@ -10,5 +10,5 @@ import { User } from '@models/user';
   styles: ``,
 })
 export class UsersTableComponent {
-  users = input.required<User[]>();
+  $users = input.required<User[]>();
 }

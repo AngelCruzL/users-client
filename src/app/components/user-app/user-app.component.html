@@ -1,5 +1,9 @@
-@if (users.length === 0) {
-  <p role="alert" class="alert alert-warning">No hay usuarios en el sistema</p>
-} @else {
-  <users-table [users]="users" />
-}
+<div class="row">
+  <div class="col">
+    <user-form ($newUser)="addUser($event)" />
+  </div>
+
+  <div class="col">
+    <users-table [$users]="users" />
+  </div>
+</div>
