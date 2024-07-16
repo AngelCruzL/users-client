@@ -49,7 +49,14 @@ export class UserFormComponent implements OnInit {
             ),
           ],
         ],
-        username: ['', [Validators.required]],
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(12),
+          ],
+        ],
         password: [
           '',
           [

@@ -95,6 +95,12 @@ export class FormGroupDirective implements OnInit, OnDestroy {
     if (errorKeys.includes('passwordsMatch')) {
       return 'Las contraseñas no coinciden.';
     }
+    if (errorKeys.includes('minlength')) {
+      return 'Este campo debe tener al menos 6 caracteres.';
+    }
+    if (errorKeys.includes('maxlength')) {
+      return 'Este campo debe tener como máximo 12 caracteres.';
+    }
     return 'Error en el campo.';
   }
 
