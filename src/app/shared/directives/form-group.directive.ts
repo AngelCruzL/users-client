@@ -68,6 +68,7 @@ export class FormGroupDirective implements OnInit, OnDestroy {
     fromEvent(inputElement, 'blur')
       .pipe(takeUntil(this.#unsubscribeAll$))
       .subscribe(() => {
+        this.#setAriaInvalid(inputElement, control.invalid);
         control.markAsTouched();
         if (control.invalid) {
           const errorLabel = inputElement.nextElementSibling;
