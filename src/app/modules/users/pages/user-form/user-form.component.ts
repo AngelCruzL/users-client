@@ -58,6 +58,7 @@ export default class UserFormComponent implements OnInit {
     } catch (error: any) {
       const errorResponse = error.error as ErrorResponse;
       this.formError = errorResponse.message;
+      setTimeout(() => (this.formError = null), 5000);
     } finally {
       this.isLoading = false;
     }
