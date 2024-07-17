@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Update User password
-PUT {{baseUrl}}/1/password
+PATCH {{baseUrl}}/1/password
 Content-Type: application/json
 
 {
