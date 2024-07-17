@@ -1,0 +1,23 @@
+<!--<div class="row">-->
+<!--  <div class="col" style="&#45;&#45;flex-grow: 1">-->
+<!--    <user-form ($newUser)="addUser($event)" [$user]="selectedUser" />-->
+<!--  </div>-->
+
+<!--  <div class="col" style="&#45;&#45;flex-grow: 2">-->
+<!--    <users-table-->
+<!--      ($onEditUser)="setSelectedUser($event)"-->
+<!--      ($onRemoveUser)="removeUser($event)"-->
+<!--      [$users]="users"-->
+<!--    />-->
+<!--  </div>-->
+<!--</div>-->
+
+<header class="text-center container">
+  <app-navbar [$users]="users" />
+
+  <h3 class="my-2">{{ title }}</h3>
+</header>
+
+<main class="container">
+  <router-outlet />
+</main>

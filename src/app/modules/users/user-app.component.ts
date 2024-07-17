@@ -2,22 +2,30 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 import { User } from '@core/models';
-import { UserService } from '../../services/user.service';
-import { UsersTableComponent } from '../users-table/users-table.component';
-import { UserFormComponent } from '../user-form/user-form.component';
+import { UserService } from './services/user.service';
+import UsersTableComponent from './pages/users-table/users-table.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
+import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'user-app',
   standalone: true,
-  imports: [UsersTableComponent, UserFormComponent],
+  imports: [
+    UsersTableComponent,
+    UserFormComponent,
+    RouterOutlet,
+    NavbarComponent,
+  ],
   templateUrl: './user-app.component.html',
   styles: ``,
 })
 export default class UserAppComponent implements OnInit, OnDestroy {
+  title = 'Users App';
   users: User[] = [];
   selectedUser!: User;
-  #unsubscribeAll$ = new Subject<void>();
   #userService = inject(UserService);
+  #unsubscribeAll$ = new Subject<void>();
 
   ngOnInit(): void {
     this.#userService

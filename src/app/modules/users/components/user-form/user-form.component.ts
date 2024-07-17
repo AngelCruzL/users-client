@@ -1,11 +1,4 @@
-import {
-  Component,
-  effect,
-  inject,
-  input,
-  OnInit,
-  output,
-} from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import {
   FormBuilder,
@@ -21,6 +14,7 @@ import {
   PasswordValidatorService,
 } from '@core/services/validators';
 import { FormGroupDirective } from '@shared/directives';
+import { SharedDataService } from '../../services/shared-data.service';
 
 @Component({
   selector: 'user-form',
@@ -30,20 +24,20 @@ import { FormGroupDirective } from '@shared/directives';
   styles: ``,
 })
 export class UserFormComponent implements OnInit {
-  $newUser = output<User>();
-  $user = input.required<User>();
+  $user = input<User | null>(null);
   userForm!: FormGroup<UserForm>;
   isLoading = false;
   #fb = inject(FormBuilder);
   #passwordValidatorService = inject(PasswordValidatorService);
   #emailValidatorService = inject(EmailValidatorService);
+  #sharedDataService = inject(SharedDataService);
 
-  constructor() {
-    effect(() => {
-      console.log(this.$user());
-      this.userForm.setValue({ ...this.$user(), passwordConfirmation: '' });
-    });
-  }
+  // constructor() {
+  //   effect(() => {
+  //     console.log(this.$user());
+  //     this.userForm.setValue({ ...this.$user(), passwordConfirmation: '' });
+  //   });
+  // }
 
   get disableSubmit(): boolean {
     return this.userForm.invalid || this.isLoading;
@@ -97,6 +91,6 @@ export class UserFormComponent implements OnInit {
   onSubmit(): void {
     if (this.disableSubmit) return;
 
-    this.$newUser.emit(this.$user());
+    this.#sharedDataService.$newUser().emit(this.$user()!);
   }
 }

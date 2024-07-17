@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UsersTableComponent } from './users-table.component';
+import UsersTableComponent from './users-table.component';
 
 describe('UsersTableComponent', () => {
   let component: UsersTableComponent;
@@ -8,10 +8,9 @@ describe('UsersTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UsersTableComponent]
-    })
-    .compileComponents();
-    
+      imports: [UsersTableComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(UsersTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
