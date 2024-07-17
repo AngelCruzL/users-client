@@ -10,7 +10,17 @@ import UsersTableComponent from './pages/users-table/users-table.component';
   selector: 'user-app',
   standalone: true,
   imports: [UsersTableComponent, RouterOutlet, NavbarComponent],
-  templateUrl: './user-app.component.html',
+  template: `
+    <header class="text-center container">
+      <app-navbar />
+
+      <h3 class="my-2">{{ title }}</h3>
+    </header>
+
+    <main class="container">
+      <router-outlet />
+    </main>
+  `,
   styles: ``,
 })
 export default class UserAppComponent implements OnInit, OnDestroy {
