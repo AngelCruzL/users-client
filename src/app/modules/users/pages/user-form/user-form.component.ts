@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import {
   FormBuilder,
@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { User } from '@core/models';
@@ -25,12 +26,12 @@ import { StateService, UserService } from '../../services';
   templateUrl: './user-form.component.html',
   styles: ``,
 })
-export class UserFormComponent implements OnInit {
-  $user = input<User | null>(null);
+export default class UserFormComponent implements OnInit {
   userForm!: FormGroup<UserForm>;
   isLoading = false;
   formError: string | null = null;
   #fb = inject(FormBuilder);
+  #router = inject(Router);
   #passwordValidatorService = inject(PasswordValidatorService);
   #emailValidatorService = inject(EmailValidatorService);
   #userService = inject(UserService);
@@ -41,6 +42,40 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.#createForm();
+  }
+
+  async onSubmit(): Promise<void> {
+    if (this.disableSubmit) return;
+    this.isLoading = true;
+    const { passwordConfirmation, ...userFormValue } = this.userForm.value;
+    const user = new User(userFormValue as User);
+
+    try {
+      user.id ? await this.#updateUser(user) : await this.#createUser(user);
+    } catch (error: any) {
+      const errorResponse = error.error as ErrorResponse;
+      this.formError = errorResponse.message;
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async #createUser(user: User): Promise<void> {
+    const newUser = await firstValueFrom(this.#userService.createUser(user));
+    this.#state.addUser(newUser);
+    this.#router.navigate(['/users']);
+  }
+
+  async #updateUser(user: User): Promise<void> {
+    const updatedUser = await firstValueFrom(
+      this.#userService.updateUser(user),
+    );
+    this.#state.updateUser(updatedUser);
+    this.#router.navigate(['/users']);
+  }
+
+  #createForm(): void {
     this.userForm = this.#fb.group(
       {
         id: [null],
@@ -83,33 +118,5 @@ export class UserFormComponent implements OnInit {
         ],
       },
     );
-  }
-
-  async onSubmit(): Promise<void> {
-    if (this.disableSubmit) return;
-    this.isLoading = true;
-    const { passwordConfirmation, ...userFormValue } = this.userForm.value;
-    const user = new User(userFormValue as User);
-
-    try {
-      user.id ? await this.#updateUser(user) : await this.#createUser(user);
-    } catch (error: any) {
-      const errorResponse = error.error as ErrorResponse;
-      this.formError = errorResponse.message;
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  async #createUser(user: User): Promise<void> {
-    const newUser = await firstValueFrom(this.#userService.createUser(user));
-    this.#state.addUser(newUser);
-  }
-
-  async #updateUser(user: User): Promise<void> {
-    const updatedUser = await firstValueFrom(
-      this.#userService.updateUser(user),
-    );
-    this.#state.updateUser(updatedUser);
   }
 }

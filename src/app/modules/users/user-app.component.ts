@@ -3,18 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import { StateService, UserService } from './services';
-import { NavbarComponent, UserFormComponent } from './components';
+import { NavbarComponent } from './components';
 import UsersTableComponent from './pages/users-table/users-table.component';
 
 @Component({
   selector: 'user-app',
   standalone: true,
-  imports: [
-    UsersTableComponent,
-    UserFormComponent,
-    RouterOutlet,
-    NavbarComponent,
-  ],
+  imports: [UsersTableComponent, RouterOutlet, NavbarComponent],
   templateUrl: './user-app.component.html',
   styles: ``,
 })

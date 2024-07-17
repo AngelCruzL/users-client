@@ -7,7 +7,7 @@ export const usersRoutes: Routes = [
   },
   {
     path: 'create',
-    loadComponent: () => import('./pages/create-user/create-user.component'),
+    loadComponent: () => import('./pages/user-form/user-form.component'),
   },
   {
     path: 'edit/:id',
