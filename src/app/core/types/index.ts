@@ -1,1 +1,1 @@
-export * from './user-form.type';
+export * from './error-response.type';
