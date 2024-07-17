@@ -16,7 +16,7 @@ import {
 } from '@core/services/validators';
 import { FormGroupDirective } from '@shared/directives';
 import { ErrorResponse } from '@core/types';
-import { UserForm } from '../../types';
+import { CreateUserForm } from '../../types';
 import { StateService, UserService } from '../../services';
 
 @Component({
@@ -27,7 +27,7 @@ import { StateService, UserService } from '../../services';
   styles: ``,
 })
 export default class UserFormComponent implements OnInit {
-  userForm!: FormGroup<UserForm>;
+  userForm!: FormGroup<CreateUserForm>;
   isLoading = false;
   formError: string | null = null;
   #fb = inject(FormBuilder);
@@ -52,7 +52,7 @@ export default class UserFormComponent implements OnInit {
     const user = new User(userFormValue as User);
 
     try {
-      user.id ? await this.#updateUser(user) : await this.#createUser(user);
+      await this.#createUser(user);
     } catch (error: any) {
       const errorResponse = error.error as ErrorResponse;
       this.formError = errorResponse.message;
@@ -78,7 +78,6 @@ export default class UserFormComponent implements OnInit {
   #createForm(): void {
     this.userForm = this.#fb.group(
       {
-        id: [null],
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         email: [
