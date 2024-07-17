@@ -1,17 +1,8 @@
-import {
-  Component,
-  inject,
-  OnDestroy,
-  OnInit,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
-import { User } from '@core/models';
-import { Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
-import { Subject, takeUntil } from 'rxjs';
-import { SharedDataService } from '../../services/shared-data.service';
+import { ErrorResponse } from '@core/types';
+import { StateService, UserService } from '../../services';
 
 @Component({
   selector: 'users-table',
@@ -20,38 +11,27 @@ import { SharedDataService } from '../../services/shared-data.service';
   templateUrl: './users-table.component.html',
   styles: ``,
 })
-export default class UsersTableComponent implements OnInit, OnDestroy {
-  $users: WritableSignal<User[]> = signal([]);
-  #sharedDataService = inject(SharedDataService);
-  #router = inject(Router);
+export default class UsersTableComponent {
+  #state = inject(StateService);
+  $users = this.#state.$users;
   #usersService = inject(UserService);
-  #unsubscribeAll$ = new Subject<void>();
 
-  ngOnInit(): void {
-    const users = this.#router.getCurrentNavigation()?.extras.state!['users'];
-    if (users) {
-      this.$users.set(users);
-    } else {
-      this.#usersService
-        .findAll()
-        .pipe(takeUntil(this.#unsubscribeAll$))
-        .subscribe(users => this.$users.set(users));
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.#unsubscribeAll$.next();
-    this.#unsubscribeAll$.complete();
-  }
-
-  onRemoveUser(userId: number) {
+  async onRemoveUser(userId: number) {
     const confirm = window.confirm(
       'Are you sure you want to remove this user?',
     );
-    if (confirm) this.#sharedDataService.$idUser().emit(userId);
+    if (!confirm) return;
+
+    try {
+      await firstValueFrom(this.#usersService.deleteUser(userId));
+      this.#state.removeUser(userId);
+    } catch (error: any) {
+      const errorResponse = error.error as ErrorResponse;
+      console.error(errorResponse.message);
+    }
   }
 
-  onEditUser(user: User) {
-    this.#sharedDataService.$user().emit(user);
+  onEditUser(user: any) {
+    // this.#sharedDataService.$user().emit(user);
   }
 }

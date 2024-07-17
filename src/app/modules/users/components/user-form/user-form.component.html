@@ -1,3 +1,7 @@
+@if (formError) {
+  <p role="alert">{{ formError }}</p>
+}
+
 <form (ngSubmit)="onSubmit()" [formGroup]="userForm">
   <div form-group>
     <label for="firstName">Nombre(s)</label>
