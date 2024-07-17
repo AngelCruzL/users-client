@@ -11,7 +11,7 @@ export const usersRoutes: Routes = [
   },
   {
     path: 'edit/:id',
-    loadComponent: () => import('./pages/update-user/update-user.component'),
+    loadComponent: () => import('./pages/edit-user/edit-user.component'),
   },
   {
     path: 'edit/password/:id',

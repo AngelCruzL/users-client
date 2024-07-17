@@ -1,0 +1,55 @@
+@if (formError) {
+  <p role="alert">{{ formError }}</p>
+}
+
+<form (ngSubmit)="onSubmit()" [formGroup]="editUserForm">
+  <div form-group>
+    <label for="firstName">Nombre(s)</label>
+    <input
+      aria-describedby="firstName-error"
+      formControlName="firstName"
+      id="firstName"
+      placeholder="Ángel"
+      type="text"
+    />
+    <small id="firstName-error"></small>
+  </div>
+
+  <div form-group>
+    <label for="lastName">Apellido(s)</label>
+    <input
+      aria-describedby="lastName-error"
+      formControlName="lastName"
+      id="lastName"
+      placeholder="Cruz"
+      type="text"
+    />
+    <small id="lastName-error"></small>
+  </div>
+
+  <div form-group>
+    <label for="email">Correo electrónico</label>
+    <input
+      aria-describedby="email-error"
+      formControlName="email"
+      id="email"
+      placeholder="sample@test.dev"
+      type="email"
+    />
+    <small id="email-error"></small>
+  </div>
+
+  <div form-group>
+    <label for="username">Usuario</label>
+    <input
+      aria-describedby="username-error"
+      formControlName="username"
+      id="username"
+      placeholder="username"
+      type="text"
+    />
+    <small id="username-error"></small>
+  </div>
+
+  <input [disabled]="disableSubmit" type="submit" value="Actualizar usuario" />
+</form>

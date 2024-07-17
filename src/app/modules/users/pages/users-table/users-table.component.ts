@@ -3,11 +3,12 @@ import { firstValueFrom } from 'rxjs';
 
 import { ErrorResponse } from '@core/types';
 import { StateService, UserService } from '../../services';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'users-table',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './users-table.component.html',
   styles: ``,
 })
@@ -29,9 +30,5 @@ export default class UsersTableComponent {
       const errorResponse = error.error as ErrorResponse;
       console.error(errorResponse.message);
     }
-  }
-
-  onEditUser(user: any) {
-    // this.#sharedDataService.$user().emit(user);
   }
 }

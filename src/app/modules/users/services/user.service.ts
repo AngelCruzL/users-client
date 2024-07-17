@@ -32,8 +32,7 @@ export class UserService {
     return this.#http.post<UserResponse>(this.#baseUrl, createUser);
   }
 
-  updateUser({ id, ...user }: User): Observable<UserResponse> {
-    const updatedUser: UpdateUser = user;
+  updateUser(id: number, user: UpdateUser): Observable<UserResponse> {
     return this.#http.put<UserResponse>(`${this.#baseUrl}/${id}`, user);
   }
 

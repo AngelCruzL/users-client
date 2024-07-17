@@ -26,11 +26,11 @@
                 <use xlink:href="#trash"></use>
               </svg>
             </button>
-            <button (click)="onEditUser(user)">
+            <a role="button" [routerLink]="['/users/edit/',user.id]">
               <svg class="icon">
                 <use xlink:href="#pen"></use>
               </svg>
-            </button>
+            </a>
           </td>
         </tr>
       }
