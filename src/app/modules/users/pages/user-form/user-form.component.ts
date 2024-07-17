@@ -52,27 +52,15 @@ export default class UserFormComponent implements OnInit {
     const user = new User(userFormValue as User);
 
     try {
-      await this.#createUser(user);
+      const newUser = await firstValueFrom(this.#userService.createUser(user));
+      this.#state.addUser(newUser);
+      this.#router.navigate(['/users']);
     } catch (error: any) {
       const errorResponse = error.error as ErrorResponse;
       this.formError = errorResponse.message;
     } finally {
       this.isLoading = false;
     }
-  }
-
-  async #createUser(user: User): Promise<void> {
-    const newUser = await firstValueFrom(this.#userService.createUser(user));
-    this.#state.addUser(newUser);
-    this.#router.navigate(['/users']);
-  }
-
-  async #updateUser(user: User): Promise<void> {
-    const updatedUser = await firstValueFrom(
-      this.#userService.updateUser(user),
-    );
-    this.#state.updateUser(updatedUser);
-    this.#router.navigate(['/users']);
   }
 
   #createForm(): void {
