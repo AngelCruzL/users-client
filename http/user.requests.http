@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:8080/api/users
+
+### Create User
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "firstName": "Ángel",
+  "lastName": "Cruz",
+  "email": "test@angelcruzl.dev",
+  "username": "angelcruzl",
+  "password": "Secret123"
+}
+
+### Get User list
+GET {{baseUrl}}
+
+### Get User by ID
+GET {{baseUrl}}/1
+
+### Update User
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+  "firstName": "Ángel Edited"
+}
+
+### Update User password
+PUT {{baseUrl}}/1/password
+Content-Type: application/json
+
+{
+  "newPassword": "Secret123",
+  "oldPassword": "NewSecret123"
+}
+
+### Delete User
+DELETE {{baseUrl}}/1
