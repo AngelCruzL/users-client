@@ -1,41 +1,50 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
+import { environment } from '@env/environment';
+import {
+  CreateUser,
+  UpdateUser,
+  UpdateUserPassword,
+  UserResponse,
+} from 'app/modules/users/types';
 import { User } from '@core/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  #users: User[] = [
-    {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'test',
-      username: 'john.doe',
-      password: 'password',
-    },
-    {
-      id: 2,
-      firstName: 'Jane',
-      lastName: 'Doe',
-      email: 'test',
-      username: 'jane.doe',
-      password: 'password',
-    },
-  ];
+  #baseUrl = environment.API_URL + '/users';
 
-  /**
-   * Retrieves all users from the service.
-   *
-   * This method returns an `Observable` of an array of `User` objects. It provides
-   * a way to asynchronously access the list of users stored within the service.
-   * The users are returned as they are stored, without any modification or filtering.
-   *
-   * @returns {Observable<User[]>} An Observable that emits the array of users.
-   */
-  findAll(): Observable<User[]> {
-    return of(this.#users);
+  #http = inject(HttpClient);
+
+  findAll(): Observable<UserResponse[]> {
+    return this.#http.get<UserResponse[]>(this.#baseUrl);
+  }
+
+  findUserById(id: number): Observable<UserResponse> {
+    return this.#http.get<UserResponse>(`${this.#baseUrl}/${id}`);
+  }
+
+  createUser({ id, ...user }: User): Observable<UserResponse> {
+    const createUser: CreateUser = user;
+    return this.#http.post<UserResponse>(this.#baseUrl, createUser);
+  }
+
+  updateUser({ id, ...user }: User): Observable<UserResponse> {
+    const updatedUser: UpdateUser = user;
+    return this.#http.put<UserResponse>(`${this.#baseUrl}/${id}`, user);
+  }
+
+  updateUserPassword(
+    id: number,
+    password: UpdateUserPassword,
+  ): Observable<UserResponse> {
+    return this.#http.patch<UserResponse>(`${this.#baseUrl}/${id}`, password);
+  }
+
+  deleteUser(id: number): Observable<void> {
+    return this.#http.delete<void>(`${this.#baseUrl}/${id}`);
   }
 }
