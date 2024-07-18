@@ -11,10 +11,26 @@
   margin-block: 2em;
 }
 
+.mt-1 {
+  margin-block-start: 1em;
+}
+
+.mb-1 {
+  margin-block-end: 1em;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
   gap: var(--row-gap, 1em);
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
 }
 
 .col {
@@ -34,4 +50,13 @@
 .icon {
   block-size: 1.2em;
   inline-size: 1.2em;
+}
+
+form {
+  display: grid;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+  }
 }

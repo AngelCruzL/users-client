@@ -2,7 +2,7 @@
   <app-alert role="alert">{{ formError }}</app-alert>
 }
 
-<form (ngSubmit)="onSubmit()" [formGroup]="userForm">
+<form [formGroup]="userForm">
   <div form-group>
     <label for="firstName">Nombre(s)</label>
     <input
@@ -76,6 +76,10 @@
       <small id="passwordConfirmation-error"></small>
     </div>
   }
-
-  <input [disabled]="disableSubmit" type="submit" value="Agregar usuario" />
 </form>
+
+<div class="row justify-center">
+  <button (click)="onSubmit()" [disabled]="disableSubmit" class="mt-1">
+    Agregar usuario
+  </button>
+</div>
