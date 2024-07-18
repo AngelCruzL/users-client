@@ -18,13 +18,19 @@ import {
 import { ErrorResponse } from '@core/types';
 import { EmailValidatorService } from '@core/services/validators';
 import { FormGroupDirective } from '@shared/directives';
+import { AlertComponent } from '@shared/components';
 import { StateService, UserService } from '../../services';
 import { UserResponse } from '../../types';
 
 @Component({
   selector: 'app-edit-user',
   standalone: true,
-  imports: [FormGroupDirective, FormsModule, ReactiveFormsModule],
+  imports: [
+    FormGroupDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    AlertComponent,
+  ],
   templateUrl: './edit-user.component.html',
   styles: ``,
 })

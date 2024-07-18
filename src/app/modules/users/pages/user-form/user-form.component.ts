@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { JsonPipe } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -14,15 +13,16 @@ import {
   EmailValidatorService,
   PasswordValidatorService,
 } from '@core/services/validators';
-import { FormGroupDirective } from '@shared/directives';
 import { ErrorResponse } from '@core/types';
+import { FormGroupDirective } from '@shared/directives';
+import { AlertComponent } from '@shared/components';
 import { CreateUserForm } from '../../types';
 import { StateService, UserService } from '../../services';
 
 @Component({
   selector: 'user-form',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, FormGroupDirective],
+  imports: [ReactiveFormsModule, FormGroupDirective, AlertComponent],
   templateUrl: './user-form.component.html',
   styles: ``,
 })
