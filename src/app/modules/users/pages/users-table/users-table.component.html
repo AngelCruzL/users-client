@@ -1,39 +1,41 @@
-@if ($users().length === 0) {
-  <p role="alert" class="text-center">No hay usuarios en el sistema</p>
-} @else {
-  <table>
-    <thead>
-    <tr>
-      <th>Id</th>
-      <th>Nombre(s)</th>
-      <th>Apellido(s)</th>
-      <th>Correo electrónico</th>
-      <th>Usuario</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-      @for (user of $users(); track user.id) {
-        <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.firstName }}</td>
-          <td>{{ user.lastName }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.username }}</td>
-          <td>
-            <button class="delete-button" (click)="onRemoveUser(user.id)">
-              <svg class="icon">
-                <use xlink:href="#trash"></use>
-              </svg>
-            </button>
-            <a role="button" [routerLink]="['/users/edit/',user.id]">
-              <svg class="icon">
-                <use xlink:href="#pen"></use>
-              </svg>
-            </a>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
-}
+<div class="overflow-auto">
+  @if ($users().length === 0) {
+    <p class="text-center">No hay usuarios en el sistema</p>
+  } @else {
+    <table>
+      <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre(s)</th>
+        <th>Apellido(s)</th>
+        <th>Correo electrónico</th>
+        <th>Usuario</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (user of $users(); track user.id) {
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }}</td>
+            <td class="row">
+              <a role="button" [routerLink]="['/users/edit/',user.id]">
+                <svg class="icon">
+                  <use xlink:href="#pen"></use>
+                </svg>
+              </a>
+              <button class="delete-button" (click)="onRemoveUser(user.id)">
+                <svg class="icon">
+                  <use xlink:href="#trash"></use>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
