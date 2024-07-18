@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '@env/environment';
@@ -9,6 +9,7 @@ import {
   UpdateUser,
   UpdateUserPassword,
   UserResponse,
+  UserResponsePaginated,
 } from 'app/modules/users/types';
 
 /**
@@ -32,11 +33,24 @@ export class UserService {
   #http = inject(HttpClient);
 
   /**
-   * Retrieves all users from the backend.
-   * @returns An Observable of an array of UserResponse objects.
+   * Retrieves all users from the backend with pagination.
+   *
+   * This method sends an HTTP GET request to fetch a paginated list of users. It constructs the request
+   * with optional query parameters for page number and page size to control pagination.
+   *
+   * @param {number} [page=0] - The page number to retrieve, starting from 0. Optional, defaults to 0.
+   * @param {number} [size=10] - The number of users per page. Optional, defaults to 10.
+   * @returns {Observable<UserResponsePaginated>} An Observable that emits the paginated response of users,
+   * containing user data along with pagination information.
    */
-  findAll(): Observable<UserResponse[]> {
-    return this.#http.get<UserResponse[]>(this.#baseUrl);
+  findAll(
+    page: number = 0,
+    size: number = 10,
+  ): Observable<UserResponsePaginated> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.#http.get<UserResponsePaginated>(this.#baseUrl, { params });
   }
 
   /**
@@ -78,7 +92,10 @@ export class UserService {
     id: number,
     password: UpdateUserPassword,
   ): Observable<UserResponse> {
-    return this.#http.patch<UserResponse>(`${this.#baseUrl}/${id}`, password);
+    return this.#http.patch<UserResponse>(
+      `${this.#baseUrl}/${id}/password`,
+      password,
+    );
   }
 
   /**
