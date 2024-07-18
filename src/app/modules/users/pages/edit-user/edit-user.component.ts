@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   catchError,
   firstValueFrom,
@@ -30,6 +30,7 @@ import { UserResponse } from '../../types';
     FormsModule,
     ReactiveFormsModule,
     AlertComponent,
+    RouterLink,
   ],
   templateUrl: './edit-user.component.html',
   styles: ``,
@@ -38,6 +39,7 @@ export default class EditUserComponent implements OnInit, OnDestroy {
   editUserForm!: FormGroup;
   formError: string | null = null;
   isLoading = false;
+  userId = 0;
   #fb = inject(FormBuilder);
   #router = inject(Router);
   #route = inject(ActivatedRoute);
@@ -112,6 +114,7 @@ export default class EditUserComponent implements OnInit, OnDestroy {
   }
 
   #loadFormValues(user: UserResponse): void {
+    this.userId = user.id;
     this.editUserForm.patchValue(user);
   }
 }

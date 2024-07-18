@@ -1,3 +1,9 @@
+<div class="row justify-end">
+  <a [routerLink]="['/users/edit/password/', userId]" class="mb-1" role="button">
+    Actualizar contraseña
+  </a>
+</div>
+
 @if (formError) {
   <app-alert>{{ formError }}</app-alert>
 }
