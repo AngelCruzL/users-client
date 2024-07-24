@@ -53,7 +53,7 @@ export default class UpdatePasswordComponent implements OnInit, OnDestroy {
   async onSubmit(): Promise<void> {
     if (this.disableSubmit) return;
     this.isLoading = true;
-    const { passwordConfirmation, ...pass } = this.passwordForm.value;
+    const { passwordConfirmation: _, ...pass } = this.passwordForm.value;
 
     try {
       await firstValueFrom(
@@ -63,10 +63,14 @@ export default class UpdatePasswordComponent implements OnInit, OnDestroy {
         ),
       );
       this.#router.navigate(['/users']);
-    } catch (error: any) {
-      const errorResponse = error.error as ErrorResponse;
-      this.formError = errorResponse.message;
-      setTimeout(() => (this.formError = null), 5000);
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'error' in error) {
+        const errorResponse = (error as { error: ErrorResponse }).error;
+        this.formError = errorResponse.message;
+        setTimeout(() => (this.formError = null), 5000);
+      } else {
+        console.error('Unexpected error:', error);
+      }
     } finally {
       this.isLoading = false;
     }

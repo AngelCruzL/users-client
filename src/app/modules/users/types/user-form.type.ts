@@ -5,16 +5,16 @@ export type CreateUserForm = Omit<UpdateUserForm, 'id'> & {
   passwordConfirmation: FormControl<string>;
 };
 
-export type UpdateUserForm = {
+export interface UpdateUserForm {
   id: FormControl<number>;
   firstName: FormControl<string>;
   lastName: FormControl<string>;
   email: FormControl<string>;
   username: FormControl<string>;
-};
+}
 
-export type UpdatePasswordForm = {
+export interface UpdatePasswordForm {
   currentPassword: FormControl<string>;
   newPassword: FormControl<string>;
   passwordConfirmation: FormControl<string>;
-};
+}

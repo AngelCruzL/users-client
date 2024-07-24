@@ -43,11 +43,8 @@ export class UserService {
    * @returns {Observable<UserResponsePaginated>} An Observable that emits the paginated response of users,
    * containing user data along with pagination information.
    */
-  findAll(
-    page: number = 0,
-    size: number = 10,
-  ): Observable<UserResponsePaginated> {
-    let params = new HttpParams()
+  findAll(page = 0, size = 10): Observable<UserResponsePaginated> {
+    const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
     return this.#http.get<UserResponsePaginated>(this.#baseUrl, { params });
@@ -64,10 +61,10 @@ export class UserService {
 
   /**
    * Creates a new user.
-   * @param user The user data to create, excluding the ID.
+   * @param User The user data to create, excluding the ID.
    * @returns An Observable of the created UserResponse object.
    */
-  createUser({ id, ...user }: User): Observable<UserResponse> {
+  createUser({ id: _, ...user }: User): Observable<UserResponse> {
     const createUser: CreateUser = user;
     return this.#http.post<UserResponse>(this.#baseUrl, createUser);
   }

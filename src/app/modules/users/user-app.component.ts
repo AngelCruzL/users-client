@@ -7,7 +7,7 @@ import { NavbarComponent } from './components';
 import UsersTableComponent from './pages/users-table/users-table.component';
 
 @Component({
-  selector: 'user-app',
+  selector: 'app-user-app',
   standalone: true,
   imports: [UsersTableComponent, RouterOutlet, NavbarComponent],
   template: `
