@@ -12,6 +12,7 @@ export const routes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: route => {
+      console.log({ route });
       // TODO: Inject guard to check if user is logged in
       return 'users';
     },

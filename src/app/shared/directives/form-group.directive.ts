@@ -8,11 +8,12 @@ import {
 import {
   AbstractControl,
   FormGroupDirective as NgFormGroupDirective,
+  ValidationErrors,
 } from '@angular/forms';
 import { fromEvent, Subject, takeUntil } from 'rxjs';
 
 @Directive({
-  selector: '[form-group]',
+  selector: '[appFormGroup]',
   standalone: true,
 })
 export class FormGroupDirective implements OnInit, OnDestroy {
@@ -82,7 +83,7 @@ export class FormGroupDirective implements OnInit, OnDestroy {
       });
   }
 
-  #getErrorMessage(errors: any): string {
+  #getErrorMessage(errors: ValidationErrors): string {
     const errorKeys = Object.keys(errors);
     if (errorKeys.includes('required')) {
       return 'Este campo es obligatorio.';

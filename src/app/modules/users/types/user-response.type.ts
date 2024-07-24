@@ -1,12 +1,12 @@
-export type UserResponse = {
+export interface UserResponse {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
   username: string;
-};
+}
 
-export type UserResponsePaginated = {
+export interface UserResponsePaginated {
   totalPages: number;
   totalElements: number;
   content: UserResponse[];
@@ -18,19 +18,19 @@ export type UserResponsePaginated = {
   pageable: Pageable;
   numberOfElements: number;
   empty: boolean;
-};
+}
 
-export type Pageable = {
+export interface Pageable {
   pageNumber: number;
   pageSize: number;
   sort: Sort;
   offset: number;
   paged: boolean;
   unpaged: boolean;
-};
+}
 
-export type Sort = {
+export interface Sort {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;
-};
+}

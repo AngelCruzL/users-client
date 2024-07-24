@@ -10,11 +10,10 @@ import {
   providedIn: 'root',
 })
 export class PasswordValidatorService {
-  static passwordPattern: string =
-    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$';
+  static passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$';
 
   passwordPatternValidator(pattern: RegExp): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl) => {
       if (!control.value) {
         return null;
       }

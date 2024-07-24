@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { ErrorResponse } from '@core/types';
+import { CustomError } from '@core/types';
 import { StateService, UserService } from '../../services';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'users-table',
+  selector: 'app-users-table',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './users-table.component.html',
@@ -26,9 +26,13 @@ export default class UsersTableComponent {
     try {
       await firstValueFrom(this.#usersService.deleteUser(userId));
       this.#state.removeUser(userId);
-    } catch (error: any) {
-      const errorResponse = error.error as ErrorResponse;
-      console.error(errorResponse.message);
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'error' in error) {
+        const errorResponse = (error as CustomError).error;
+        console.error(errorResponse.message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
     }
   }
 }

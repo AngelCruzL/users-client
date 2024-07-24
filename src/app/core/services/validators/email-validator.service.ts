@@ -5,10 +5,10 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
   providedIn: 'root',
 })
 export class EmailValidatorService {
-  static emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
 
   emailPatternValidator(pattern: RegExp): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl) => {
       if (!control.value) {
         return null;
       }
