@@ -1,7 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
+import { PaginationComponent } from '@shared/components';
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+} from '@shared/utils/constants';
 import { StateService, UserService } from './services';
 import { NavbarComponent } from './components';
 import UsersTableComponent from './pages/users-table/users-table.component';
@@ -9,7 +14,12 @@ import UsersTableComponent from './pages/users-table/users-table.component';
 @Component({
   selector: 'app-user-app',
   standalone: true,
-  imports: [UsersTableComponent, RouterOutlet, NavbarComponent],
+  imports: [
+    UsersTableComponent,
+    RouterOutlet,
+    NavbarComponent,
+    PaginationComponent,
+  ],
   template: `
     <header class="text-center container">
       <app-navbar />
@@ -19,25 +29,62 @@ import UsersTableComponent from './pages/users-table/users-table.component';
 
     <main class="container">
       <router-outlet />
+      <app-pagination
+        [currentPage]="pageNumber"
+        [lastPage]="lastPage"
+        (pageChange)="onPageChange($event)"
+      />
     </main>
   `,
   styles: ``,
 })
 export default class UserAppComponent implements OnInit, OnDestroy {
   title = 'Users App';
+  pageNumber = DEFAULT_PAGE_NUMBER;
+  pageSize = DEFAULT_PAGE_SIZE;
+  pageSizes = [5, 10, 25];
+  lastPage = 0;
+  #route = inject(ActivatedRoute);
+  #router = inject(Router);
   #usersService = inject(UserService);
   #state = inject(StateService);
   #unsubscribeAll$ = new Subject<void>();
 
   ngOnInit(): void {
-    this.#usersService
-      .findAll()
+    this.#route.queryParams
       .pipe(takeUntil(this.#unsubscribeAll$))
-      .subscribe(users => this.#state.setUsers(users));
+      .subscribe(params => {
+        this.pageNumber = params['page'] || DEFAULT_PAGE_NUMBER;
+        this.pageSize = params['size'] || DEFAULT_PAGE_SIZE;
+      });
+
+    this.#usersService
+      .findAll(this.pageNumber, this.pageSize)
+      .pipe(takeUntil(this.#unsubscribeAll$))
+      .subscribe(pageable => {
+        this.#state.setUsers(pageable.content);
+        this.lastPage = pageable.totalPages;
+      });
   }
 
   ngOnDestroy(): void {
     this.#unsubscribeAll$.next();
     this.#unsubscribeAll$.complete();
+  }
+
+  onPageChange(newPage: number): void {
+    this.pageNumber = newPage;
+    this.#router.navigate([], {
+      relativeTo: this.#route,
+      queryParams: { page: this.pageNumber, size: this.pageSize },
+      queryParamsHandling: 'merge',
+    });
+    this.#usersService
+      .findAll(this.pageNumber, this.pageSize)
+      .pipe(takeUntil(this.#unsubscribeAll$))
+      .subscribe(pageable => {
+        this.#state.setUsers(pageable.content);
+        this.lastPage = pageable.totalPages;
+      });
   }
 }
