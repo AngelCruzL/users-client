@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { User } from '@core/models';
@@ -11,6 +11,7 @@ import {
   UserResponse,
   UserResponsePaginated,
 } from 'app/modules/users/types';
+import { userAdapter } from '../adapters/user.adapter';
 
 /**
  * Service responsible for user-related operations, providing methods to interact with the backend API for user management.
@@ -40,14 +41,16 @@ export class UserService {
    *
    * @param {number} [page=0] - The page number to retrieve, starting from 0. Optional, defaults to 0.
    * @param {number} [size=10] - The number of users per page. Optional, defaults to 10.
-   * @returns {Observable<UserResponsePaginated>} An Observable that emits the paginated response of users,
+   * @returns {Observable<UserResponse[]>} An Observable that emits the paginated response of users,
    * containing user data along with pagination information.
    */
-  findAll(page = 0, size = 10): Observable<UserResponsePaginated> {
+  findAll(page = 0, size = 10): Observable<UserResponse[]> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.#http.get<UserResponsePaginated>(this.#baseUrl, { params });
+    return this.#http
+      .get<UserResponsePaginated>(this.#baseUrl, { params })
+      .pipe(map(userAdapter));
   }
 
   /**

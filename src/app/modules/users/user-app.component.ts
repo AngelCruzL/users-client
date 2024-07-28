@@ -33,7 +33,7 @@ export default class UserAppComponent implements OnInit, OnDestroy {
     this.#usersService
       .findAll()
       .pipe(takeUntil(this.#unsubscribeAll$))
-      .subscribe(({ content }) => this.#state.setUsers(content));
+      .subscribe(users => this.#state.setUsers(users));
   }
 
   ngOnDestroy(): void {
