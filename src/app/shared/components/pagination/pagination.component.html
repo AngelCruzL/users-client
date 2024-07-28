@@ -1,0 +1,31 @@
+<div class="flex">
+  <div>
+    <label for="pageSize">Page Size:</label>
+    <select (change)="onPageSizeChange($event)" id="pageSize">
+      @for (size of PAGE_SIZE_OPTIONS; track size) {
+        @if (size === +pageSize()) {
+          <option [value]="size" selected>{{ size }}</option>
+        } @else {
+          <option [value]="size">{{ size }}</option>
+        }
+      }
+    </select>
+  </div>
+
+  <div role="group">
+    @if (displayFirst) {
+      <button (click)="goToFistPage()">
+        <app-icon [$icon]="Icon.FIRST_PAGE" />
+      </button>
+    }
+    <button (click)="goToPreviousPage()" [disabled]="disablePrevious">
+      Previous
+    </button>
+    <button (click)="goToNextPage()" [disabled]="disableNext">Next</button>
+    @if (displayLast) {
+      <button (click)="goToLastPage()">
+        <app-icon [$icon]="Icon.LAST_PAGE" />
+      </button>
+    }
+  </div>
+</div>

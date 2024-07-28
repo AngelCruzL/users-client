@@ -1,37 +1,23 @@
 import { Component, input, output } from '@angular/core';
 import { IconComponent } from '@shared/components/icon/icon.component';
-import { Icon } from '@shared/utils/constants';
+import { Icon, PAGE_SIZE_OPTIONS } from '@shared/utils/constants';
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
   imports: [IconComponent],
-  template: `
-    <div role="group">
-      @if (displayFirst) {
-        <button (click)="goToFistPage()">
-          <app-icon [$icon]="Icon.FIRST_PAGE" />
-        </button>
-      }
-      <button (click)="previousPage()" [disabled]="disablePrevious">
-        Previous
-      </button>
-      <button (click)="nextPage()" [disabled]="disableNext">Next</button>
-      @if (displayLast) {
-        <button (click)="goToLastPage()">
-          <app-icon [$icon]="Icon.LAST_PAGE" />
-        </button>
-      }
-    </div>
-  `,
+  templateUrl: 'pagination.component.html',
   styles: ``,
 })
 export class PaginationComponent {
   currentPage = input.required<number>();
   lastPage = input.required<number>();
+  pageSize = input.required<number>();
   pageChange = output<number>();
+  pageSizeChange = output<number>();
   firstPage = 1;
   protected readonly Icon = Icon;
+  protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   get displayFirst(): boolean {
     return +this.currentPage() !== this.firstPage;
@@ -55,13 +41,13 @@ export class PaginationComponent {
     }
   }
 
-  previousPage(): void {
+  goToPreviousPage(): void {
     if (this.currentPage() > this.firstPage) {
       this.pageChange.emit(+this.currentPage() - 1);
     }
   }
 
-  nextPage(): void {
+  goToNextPage(): void {
     if (this.currentPage() < this.lastPage()) {
       this.pageChange.emit(+this.currentPage() + 1);
     }
@@ -71,5 +57,10 @@ export class PaginationComponent {
     if (this.currentPage() < this.lastPage()) {
       this.pageChange.emit(+this.lastPage());
     }
+  }
+
+  onPageSizeChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.pageSizeChange.emit(+selectElement.value);
   }
 }

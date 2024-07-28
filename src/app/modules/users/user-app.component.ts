@@ -29,10 +29,13 @@ import UsersTableComponent from './pages/users-table/users-table.component';
 
     <main class="container">
       <router-outlet />
+
       <app-pagination
         [currentPage]="pageNumber"
         [lastPage]="lastPage"
+        [pageSize]="pageSize"
         (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
       />
     </main>
   `,
@@ -42,7 +45,6 @@ export default class UserAppComponent implements OnInit, OnDestroy {
   title = 'Users App';
   pageNumber = DEFAULT_PAGE_NUMBER;
   pageSize = DEFAULT_PAGE_SIZE;
-  pageSizes = [5, 10, 25];
   lastPage = 0;
   #route = inject(ActivatedRoute);
   #router = inject(Router);
@@ -74,6 +76,16 @@ export default class UserAppComponent implements OnInit, OnDestroy {
 
   onPageChange(newPage: number): void {
     this.pageNumber = newPage;
+    this.updateUserList();
+  }
+
+  onPageSizeChange(newPageSize: number): void {
+    this.pageSize = newPageSize;
+    this.pageNumber = DEFAULT_PAGE_NUMBER;
+    this.updateUserList();
+  }
+
+  private updateUserList() {
     this.#router.navigate([], {
       relativeTo: this.#route,
       queryParams: { page: this.pageNumber, size: this.pageSize },
