@@ -1,4 +1,4 @@
-export enum Icons {
+export enum Icon {
   PEN = 'pen',
   TRASH = 'trash',
   FIRST_PAGE = 'first-page',
