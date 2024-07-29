@@ -6,6 +6,7 @@ import { CustomError } from '@core/types';
 import { StateService, UserService } from '../../services';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { Icon } from '@shared/utils/constants';
+import { AuthService } from '@core/services';
 
 @Component({
   selector: 'app-users-table',
@@ -15,10 +16,11 @@ import { Icon } from '@shared/utils/constants';
   styles: ``,
 })
 export default class UsersTableComponent {
+  isAdmin = inject(AuthService).$tokenPayload()!.isAdmin;
   protected readonly Icon = Icon;
+  #usersService = inject(UserService);
   #state = inject(StateService);
   $users = this.#state.$users;
-  #usersService = inject(UserService);
 
   async onRemoveUser(userId: number) {
     const confirm = window.confirm(

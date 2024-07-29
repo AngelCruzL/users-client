@@ -10,7 +10,9 @@
           <th>Apellido(s)</th>
           <th>Correo electrónico</th>
           <th>Usuario</th>
-          <th></th>
+          @if (isAdmin) {
+            <th></th>
+          }
         </tr>
       </thead>
       <tbody>
@@ -21,14 +23,16 @@
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.username }}</td>
-            <td class="row">
-              <a role="button" [routerLink]="['/users/edit/', user.id]">
-                <app-icon [icon]="Icon.PEN" />
-              </a>
-              <button class="delete-button" (click)="onRemoveUser(user.id)">
-                <app-icon [icon]="Icon.TRASH" />
-              </button>
-            </td>
+            @if (isAdmin) {
+              <td class="row">
+                <a role="button" [routerLink]="['/users/edit/', user.id]">
+                  <app-icon [icon]="Icon.PEN" />
+                </a>
+                <button class="delete-button" (click)="onRemoveUser(user.id)">
+                  <app-icon [icon]="Icon.TRASH" />
+                </button>
+              </td>
+            }
           </tr>
         }
       </tbody>
