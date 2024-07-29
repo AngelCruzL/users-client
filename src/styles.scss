@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-@use "@picocss/pico/scss";
-@use "@picocss/pico/scss/colors" as c;
+@use '@picocss/pico/scss';
+@use '@picocss/pico/scss/colors' as c;
 
 .text-center {
   text-align: center;
@@ -13,6 +13,10 @@
 
 .mt-1 {
   margin-block-start: 1em;
+}
+
+.mt-4 {
+  margin-block-start: 4em;
 }
 
 .mb-1 {

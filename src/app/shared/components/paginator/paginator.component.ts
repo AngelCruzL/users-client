@@ -1,15 +1,27 @@
 import { Component, input, output } from '@angular/core';
+
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { Icon, PAGE_SIZE_OPTIONS } from '@shared/utils/constants';
 
 @Component({
-  selector: 'app-pagination',
+  selector: 'app-paginator',
   standalone: true,
   imports: [IconComponent],
-  templateUrl: 'pagination.component.html',
-  styles: ``,
+  templateUrl: 'paginator.component.html',
+  styles: `
+    .caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 1rem 0.5rem;
+    }
+
+    .size-selector {
+      display: flex;
+    }
+  `,
 })
-export class PaginationComponent {
+export class PaginatorComponent {
   currentPage = input.required<number>();
   lastPage = input.required<number>();
   pageSize = input.required<number>();

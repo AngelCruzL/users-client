@@ -8,15 +8,15 @@ import { Icon } from '@shared/utils/constants';
   imports: [],
   template: `
     <svg class="icon">
-      <use [attr.xlink:href]="icon"></use>
+      <use [attr.xlink:href]="iconName"></use>
     </svg>
   `,
   styles: ``,
 })
 export class IconComponent {
-  $icon = input.required<Icon>();
+  icon = input.required<Icon>();
 
-  get icon(): string {
-    return `#${this.$icon()}`;
+  get iconName(): string {
+    return `#${this.icon()}`;
   }
 }

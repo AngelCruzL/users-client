@@ -1,2 +1,2 @@
 export * from './alert/alert.component';
-export * from './pagination/pagination.component';
+export * from './paginator/paginator.component';

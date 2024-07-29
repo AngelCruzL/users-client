@@ -37,15 +37,15 @@ export class UserService {
   #http = inject(HttpClient);
 
   /**
-   * Retrieves all users from the backend with pagination.
+   * Retrieves all users from the backend with paginator.
    *
    * This method sends an HTTP GET request to fetch a paginated list of users. It constructs the request
-   * with optional query parameters for page number and page size to control pagination.
+   * with optional query parameters for page number and page size to control paginator.
    *
    * @param {number} [page=1] - The page number to retrieve, starting from 1. Optional, defaults to 1.
    * @param {number} [size=10] - The number of users per page. Optional, defaults to 10.
    * @returns {Observable<UserResponsePaginated>} An Observable that emits the paginated response of users,
-   * containing user data along with pagination information.
+   * containing user data along with paginator information.
    */
   findAll(
     page: number = DEFAULT_PAGE_NUMBER,

@@ -2,11 +2,11 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-import { PaginationComponent } from '@shared/components';
 import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_PAGE_SIZE,
 } from '@shared/utils/constants';
+import { PaginatorComponent } from '@shared/components';
 import { StateService, UserService } from './services';
 import { NavbarComponent } from './components';
 import UsersTableComponent from './pages/users-table/users-table.component';
@@ -18,7 +18,7 @@ import UsersTableComponent from './pages/users-table/users-table.component';
     UsersTableComponent,
     RouterOutlet,
     NavbarComponent,
-    PaginationComponent,
+    PaginatorComponent,
   ],
   template: `
     <header class="text-center container">
@@ -30,13 +30,15 @@ import UsersTableComponent from './pages/users-table/users-table.component';
     <main class="container">
       <router-outlet />
 
-      <app-pagination
-        [currentPage]="pageNumber"
-        [lastPage]="lastPage"
-        [pageSize]="pageSize"
-        (pageChange)="onPageChange($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
-      />
+      <div class="mt-4">
+        <app-paginator
+          [currentPage]="pageNumber"
+          [lastPage]="lastPage"
+          [pageSize]="pageSize"
+          (pageChange)="onPageChange($event)"
+          (pageSizeChange)="onPageSizeChange($event)"
+        />
+      </div>
     </main>
   `,
   styles: ``,

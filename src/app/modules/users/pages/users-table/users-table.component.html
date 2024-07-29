@@ -23,10 +23,10 @@
             <td>{{ user.username }}</td>
             <td class="row">
               <a role="button" [routerLink]="['/users/edit/', user.id]">
-                <app-icon [$icon]="Icon.PEN" />
+                <app-icon [icon]="Icon.PEN" />
               </a>
               <button class="delete-button" (click)="onRemoveUser(user.id)">
-                <app-icon [$icon]="Icon.TRASH" />
+                <app-icon [icon]="Icon.TRASH" />
               </button>
             </td>
           </tr>
