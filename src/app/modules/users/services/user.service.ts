@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { User } from '@core/models';
@@ -11,7 +11,10 @@ import {
   UserResponse,
   UserResponsePaginated,
 } from 'app/modules/users/types';
-import { userAdapter } from '../adapters/user.adapter';
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+} from '@shared/utils/constants';
 
 /**
  * Service responsible for user-related operations, providing methods to interact with the backend API for user management.
@@ -34,23 +37,24 @@ export class UserService {
   #http = inject(HttpClient);
 
   /**
-   * Retrieves all users from the backend with pagination.
+   * Retrieves all users from the backend with paginator.
    *
    * This method sends an HTTP GET request to fetch a paginated list of users. It constructs the request
-   * with optional query parameters for page number and page size to control pagination.
+   * with optional query parameters for page number and page size to control paginator.
    *
-   * @param {number} [page=0] - The page number to retrieve, starting from 0. Optional, defaults to 0.
+   * @param {number} [page=1] - The page number to retrieve, starting from 1. Optional, defaults to 1.
    * @param {number} [size=10] - The number of users per page. Optional, defaults to 10.
-   * @returns {Observable<UserResponse[]>} An Observable that emits the paginated response of users,
-   * containing user data along with pagination information.
+   * @returns {Observable<UserResponsePaginated>} An Observable that emits the paginated response of users,
+   * containing user data along with paginator information.
    */
-  findAll(page = 0, size = 10): Observable<UserResponse[]> {
+  findAll(
+    page: number = DEFAULT_PAGE_NUMBER,
+    size: number = DEFAULT_PAGE_SIZE,
+  ): Observable<UserResponsePaginated> {
     const params = new HttpParams()
-      .set('page', page.toString())
+      .set('page', (page - 1).toString())
       .set('size', size.toString());
-    return this.#http
-      .get<UserResponsePaginated>(this.#baseUrl, { params })
-      .pipe(map(userAdapter));
+    return this.#http.get<UserResponsePaginated>(this.#baseUrl, { params });
   }
 
   /**

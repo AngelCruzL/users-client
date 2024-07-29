@@ -4,14 +4,14 @@
   } @else {
     <table>
       <thead>
-      <tr>
-        <th>Id</th>
-        <th>Nombre(s)</th>
-        <th>Apellido(s)</th>
-        <th>Correo electrónico</th>
-        <th>Usuario</th>
-        <th></th>
-      </tr>
+        <tr>
+          <th>Id</th>
+          <th>Nombre(s)</th>
+          <th>Apellido(s)</th>
+          <th>Correo electrónico</th>
+          <th>Usuario</th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
         @for (user of $users(); track user.id) {
@@ -22,15 +22,11 @@
             <td>{{ user.email }}</td>
             <td>{{ user.username }}</td>
             <td class="row">
-              <a role="button" [routerLink]="['/users/edit/',user.id]">
-                <svg class="icon">
-                  <use xlink:href="#pen"></use>
-                </svg>
+              <a role="button" [routerLink]="['/users/edit/', user.id]">
+                <app-icon [icon]="Icon.PEN" />
               </a>
               <button class="delete-button" (click)="onRemoveUser(user.id)">
-                <svg class="icon">
-                  <use xlink:href="#trash"></use>
-                </svg>
+                <app-icon [icon]="Icon.TRASH" />
               </button>
             </td>
           </tr>

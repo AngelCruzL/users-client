@@ -1,18 +1,21 @@
 import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { CustomError } from '@core/types';
 import { StateService, UserService } from '../../services';
-import { RouterLink } from '@angular/router';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { Icon } from '@shared/utils/constants';
 
 @Component({
   selector: 'app-users-table',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, IconComponent],
   templateUrl: './users-table.component.html',
   styles: ``,
 })
 export default class UsersTableComponent {
+  protected readonly Icon = Icon;
   #state = inject(StateService);
   $users = this.#state.$users;
   #usersService = inject(UserService);
