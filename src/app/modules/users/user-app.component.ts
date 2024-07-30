@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import {
@@ -29,16 +29,6 @@ import UsersTableComponent from './pages/users-table/users-table.component';
 
     <main class="container">
       <router-outlet />
-
-      <div class="mt-4">
-        <app-paginator
-          [currentPage]="pageNumber"
-          [lastPage]="lastPage"
-          [pageSize]="pageSize"
-          (pageChange)="onPageChange($event)"
-          (pageSizeChange)="onPageSizeChange($event)"
-        />
-      </div>
     </main>
   `,
   styles: ``,
@@ -49,7 +39,6 @@ export default class UserAppComponent implements OnInit, OnDestroy {
   pageSize = DEFAULT_PAGE_SIZE;
   lastPage = 0;
   #route = inject(ActivatedRoute);
-  #router = inject(Router);
   #usersService = inject(UserService);
   #state = inject(StateService);
   #unsubscribeAll$ = new Subject<void>();
@@ -74,31 +63,5 @@ export default class UserAppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.#unsubscribeAll$.next();
     this.#unsubscribeAll$.complete();
-  }
-
-  onPageChange(newPage: number): void {
-    this.pageNumber = newPage;
-    this.updateUserList();
-  }
-
-  onPageSizeChange(newPageSize: number): void {
-    this.pageSize = newPageSize;
-    this.pageNumber = DEFAULT_PAGE_NUMBER;
-    this.updateUserList();
-  }
-
-  private updateUserList() {
-    this.#router.navigate([], {
-      relativeTo: this.#route,
-      queryParams: { page: this.pageNumber, size: this.pageSize },
-      queryParamsHandling: 'merge',
-    });
-    this.#usersService
-      .findAll(this.pageNumber, this.pageSize)
-      .pipe(takeUntil(this.#unsubscribeAll$))
-      .subscribe(pageable => {
-        this.#state.setUsers(pageable.content);
-        this.lastPage = pageable.totalPages;
-      });
   }
 }

@@ -39,3 +39,13 @@
     </table>
   }
 </div>
+
+<div class="mt-4">
+  <app-paginator
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+    [currentPage]="pageNumber"
+    [lastPage]="lastPage"
+    [pageSize]="pageSize"
+  />
+</div>
