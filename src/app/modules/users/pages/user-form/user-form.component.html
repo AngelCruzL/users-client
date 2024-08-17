@@ -3,7 +3,7 @@
 }
 
 <form [formGroup]="userForm">
-  <div form-group>
+  <div appFormGroup>
     <label for="firstName">Nombre(s)</label>
     <input
       aria-describedby="firstName-error"
@@ -15,7 +15,7 @@
     <small id="firstName-error"></small>
   </div>
 
-  <div form-group>
+  <div appFormGroup>
     <label for="lastName">Apellido(s)</label>
     <input
       aria-describedby="lastName-error"
@@ -27,7 +27,7 @@
     <small id="lastName-error"></small>
   </div>
 
-  <div form-group>
+  <div appFormGroup>
     <label for="email">Correo electrónico</label>
     <input
       aria-describedby="email-error"
@@ -39,7 +39,7 @@
     <small id="email-error"></small>
   </div>
 
-  <div form-group>
+  <div appFormGroup>
     <label for="username">Usuario</label>
     <input
       aria-describedby="username-error"
@@ -51,7 +51,7 @@
     <small id="username-error"></small>
   </div>
 
-  <div form-group>
+  <div appFormGroup>
     <label for="password">Contraseña</label>
     <input
       aria-describedby="password-error"
@@ -64,7 +64,7 @@
   </div>
 
   @if (userForm.value.password?.trim() !== '') {
-    <div form-group>
+    <div appFormGroup>
       <label for="passwordConfirmation">Confirmar contraseña</label>
       <input
         aria-describedby="passwordConfirmation-error"

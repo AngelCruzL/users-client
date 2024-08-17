@@ -15,7 +15,7 @@ import {
   takeUntil,
 } from 'rxjs';
 
-import { ErrorResponse } from '@core/types';
+import { CustomError } from '@core/types';
 import { EmailValidatorService } from '@core/services/validators';
 import { FormGroupDirective } from '@shared/directives';
 import { AlertComponent } from '@shared/components';
@@ -79,10 +79,14 @@ export default class EditUserComponent implements OnInit, OnDestroy {
       );
       this.#state.updateUser(updatedUser);
       this.#router.navigate(['/users']);
-    } catch (error: any) {
-      const errorResponse = error.error as ErrorResponse;
-      this.formError = errorResponse.message;
-      setTimeout(() => (this.formError = null), 5000);
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'error' in error) {
+        const errorResponse = (error as CustomError).error;
+        this.formError = errorResponse.message;
+        setTimeout(() => (this.formError = null), 5000);
+      } else {
+        console.error('Unexpected error:', error);
+      }
     } finally {
       this.isLoading = false;
     }

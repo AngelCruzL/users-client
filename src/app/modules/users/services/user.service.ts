@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '@env/environment';
@@ -9,7 +9,12 @@ import {
   UpdateUser,
   UpdateUserPassword,
   UserResponse,
+  UserResponsePaginated,
 } from 'app/modules/users/types';
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+} from '@shared/utils/constants';
 
 /**
  * Service responsible for user-related operations, providing methods to interact with the backend API for user management.
@@ -32,11 +37,24 @@ export class UserService {
   #http = inject(HttpClient);
 
   /**
-   * Retrieves all users from the backend.
-   * @returns An Observable of an array of UserResponse objects.
+   * Retrieves all users from the backend with paginator.
+   *
+   * This method sends an HTTP GET request to fetch a paginated list of users. It constructs the request
+   * with optional query parameters for page number and page size to control paginator.
+   *
+   * @param {number} [page=1] - The page number to retrieve, starting from 1. Optional, defaults to 1.
+   * @param {number} [size=10] - The number of users per page. Optional, defaults to 10.
+   * @returns {Observable<UserResponsePaginated>} An Observable that emits the paginated response of users,
+   * containing user data along with paginator information.
    */
-  findAll(): Observable<UserResponse[]> {
-    return this.#http.get<UserResponse[]>(this.#baseUrl);
+  findAll(
+    page: number = DEFAULT_PAGE_NUMBER,
+    size: number = DEFAULT_PAGE_SIZE,
+  ): Observable<UserResponsePaginated> {
+    const params = new HttpParams()
+      .set('page', (page - 1).toString())
+      .set('size', size.toString());
+    return this.#http.get<UserResponsePaginated>(this.#baseUrl, { params });
   }
 
   /**
@@ -50,10 +68,10 @@ export class UserService {
 
   /**
    * Creates a new user.
-   * @param user The user data to create, excluding the ID.
+   * @param User The user data to create, excluding the ID.
    * @returns An Observable of the created UserResponse object.
    */
-  createUser({ id, ...user }: User): Observable<UserResponse> {
+  createUser({ id: _, ...user }: User): Observable<UserResponse> {
     const createUser: CreateUser = user;
     return this.#http.post<UserResponse>(this.#baseUrl, createUser);
   }
@@ -78,7 +96,10 @@ export class UserService {
     id: number,
     password: UpdateUserPassword,
   ): Observable<UserResponse> {
-    return this.#http.patch<UserResponse>(`${this.#baseUrl}/${id}`, password);
+    return this.#http.patch<UserResponse>(
+      `${this.#baseUrl}/${id}/password`,
+      password,
+    );
   }
 
   /**

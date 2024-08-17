@@ -13,14 +13,14 @@ import {
   EmailValidatorService,
   PasswordValidatorService,
 } from '@core/services/validators';
-import { ErrorResponse } from '@core/types';
+import { CustomError } from '@core/types';
 import { FormGroupDirective } from '@shared/directives';
 import { AlertComponent } from '@shared/components';
 import { CreateUserForm } from '../../types';
 import { StateService, UserService } from '../../services';
 
 @Component({
-  selector: 'user-form',
+  selector: 'app-user-form',
   standalone: true,
   imports: [ReactiveFormsModule, FormGroupDirective, AlertComponent],
   templateUrl: './user-form.component.html',
@@ -48,17 +48,21 @@ export default class UserFormComponent implements OnInit {
   async onSubmit(): Promise<void> {
     if (this.disableSubmit) return;
     this.isLoading = true;
-    const { passwordConfirmation, ...userFormValue } = this.userForm.value;
+    const { passwordConfirmation: _, ...userFormValue } = this.userForm.value;
     const user = new User(userFormValue as User);
 
     try {
       const newUser = await firstValueFrom(this.#userService.createUser(user));
       this.#state.addUser(newUser);
       this.#router.navigate(['/users']);
-    } catch (error: any) {
-      const errorResponse = error.error as ErrorResponse;
-      this.formError = errorResponse.message;
-      setTimeout(() => (this.formError = null), 5000);
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'error' in error) {
+        const errorResponse = (error as CustomError).error;
+        this.formError = errorResponse.message;
+        setTimeout(() => (this.formError = null), 5000);
+      } else {
+        console.error('Unexpected error:', error);
+      }
     } finally {
       this.isLoading = false;
     }
